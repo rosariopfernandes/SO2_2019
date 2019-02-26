@@ -2,16 +2,17 @@ from random import randint
 
 
 class Processo:
-    pid: int
+    pid: int = 1
     chegada: int  # Horário de chegada
     duracao: int  # Previsão da Duração
-    tempo_espera: int
-    tempo_resposta: int
+    tempo_espera: int = 0  # TODO: Calculate this value
+    tempo_resposta: int = 0  # TODO: Calculate this value
 
-    def __init__(self, pid: int):
-        self.pid = pid
+    def __init__(self):
+        self.pid = Processo.pid
         self.chegada = randint(0, 9)
         self.duracao = randint(0, 9)
+        Processo.pid = Processo.pid + 1
 
     def get_id(self):
         return self.pid
@@ -32,9 +33,11 @@ class Processo:
         self.pid = pid
 
     def set_chegada(self, chegada: int):
+        # TODO: negar menores que 10
         self.chegada = chegada
 
     def set_duracao(self, duracao: int):
+        # TODO: negar menores que 10
         self.duracao = duracao
 
     def set_tempo_espera(self, tempo_espera: int):
