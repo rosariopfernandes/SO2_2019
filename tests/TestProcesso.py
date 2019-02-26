@@ -8,7 +8,7 @@ class TestProcesso(unittest.TestCase):
         self.assertNotEqual(processo, None)
 
     # alínea a)
-    def test_id_is_unique(self):
+    def test_pid_is_unique(self):
         processo1 = Processo()
         processo2 = Processo()
         processo3 = Processo()
@@ -17,9 +17,10 @@ class TestProcesso(unittest.TestCase):
         self.assertNotEqual(processo1.pid, processo3.pid)
 
     # alínea b)
-    def test_chegada_duracao_less_than_ten(self):
+    def test_chegada_and_duracao_less_than_ten(self):
         processo = Processo()
-        self.assertLess(processo.pid, 10)
+        self.assertLess(processo.chegada, 10)
+        self.assertLess(processo.duracao, 10)
 
     # alínea d)
     def test_getters(self):
