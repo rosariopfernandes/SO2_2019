@@ -4,20 +4,6 @@ from Programa import Programa
 from Processo import Processo
 
 
-def __get_statistics__(tempo_medio: int,  # Tempo médio de resposta
-                       turn_around: int,  # Turn Around Time
-                       throughput: int,  # Throughput
-                       utilizacao_cpu: int  # Taxa de Utilização do CPU
-                       ):
-    output = "Estatística da Simulação\n" \
-             + "========================================\n" \
-             + "Tempo médio de resposta: " + str(tempo_medio) + "\n" \
-             + "Turn Around Time: " + str(turn_around) + "\n" \
-             + "Throughput: " + str(throughput) + "\n" \
-             + "Taxa de Utilização do CPU: " + str(utilizacao_cpu) + "\n"
-    return output
-
-
 def __get_formatted_process_list__(processos: list):
     output = "| ID Processo\t| Tempo de chegada\t| Duração\t|\n"
     for processo in processos:
@@ -41,6 +27,7 @@ def __imprimir_resultado__(resultado: str):
     print(resultado)
     filename = __write_file__(resultado)
     print("Dados guardados em " + filename)
+
 
 def pedir_opcao():
     opcao = int(input("Escolha a opção:"))
@@ -66,26 +53,52 @@ def mostrar_menu():
     print("4. Executar RR")
     print("5. Sair")
     opcao = pedir_opcao()
-    processos = Programa().gerar_lista_processos(3)
+    # processos = Programa().gerar_lista_processos(3)
+    processos = [
+        Processo().set_chegada_duracao(0, 12),
+        Processo().set_chegada_duracao(3, 6),
+        Processo().set_chegada_duracao(5, 2),
+        Processo().set_chegada_duracao(8, 5),
+        Processo().set_chegada_duracao(13, 8)
+    ]
+
     # processos = [
-    #     Processo().set_chegada_duracao(0, 12),
-    #     Processo().set_chegada_duracao(3, 6),
-    #     Processo().set_chegada_duracao(5, 2),
-    #     Processo().set_chegada_duracao(8, 5),
-    #     Processo().set_chegada_duracao(13, 8)
+    #     Processo().set_chegada_duracao(0, 1),
+    #     Processo().set_chegada_duracao(0, 1),
+    #     Processo().set_chegada_duracao(0, 1),
+    #     Processo().set_chegada_duracao(3, 1),
+    #     Processo().set_chegada_duracao(3, 2),
+    #     Processo().set_chegada_duracao(3, 3),
+    #     Processo().set_chegada_duracao(7, 3),
+    #     Processo().set_chegada_duracao(7, 2),
+    #     Processo().set_chegada_duracao(7, 1),
+    #     Processo().set_chegada_duracao(13, 1),
+    #     Processo().set_chegada_duracao(13, 2),
+    #     Processo().set_chegada_duracao(13, 3),
+    #     Processo().set_chegada_duracao(17, 1),
+    #     Processo().set_chegada_duracao(17, 2)
+    # ]
+
+    # processos = [
+    #     Processo().set_chegada_duracao(3, 9),
+    #     Processo().set_chegada_duracao(6, 4),
+    #     Processo().set_chegada_duracao(9, 12),
+    #     Processo().set_chegada_duracao(12, 3)
     # ]
     escalonador = Escalonador(processos)
     if opcao == 1:
         resultado = escalonador.executar_fcfs()
         __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
     elif opcao == 2:
-        print("opcao 2")
+        resultado = escalonador.executar_srt()
+        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
     elif opcao == 3:
         resultado = escalonador.executar_sjf()
         __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
     elif opcao == 4:
         quantum = pedir_quantum()
-        escalonador.executar_rr(quantum)
+        resultado = escalonador.executar_rr(quantum)
+        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
     else:
         print("Até a próxima!")
         return
