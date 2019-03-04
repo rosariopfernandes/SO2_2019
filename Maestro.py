@@ -86,22 +86,20 @@ def mostrar_menu():
     #     Processo().set_chegada_duracao(12, 3)
     # ]
     escalonador = Escalonador(processos)
+    resultado = __get_formatted_process_list__(processos) + "\n"
     if opcao == 1:
-        resultado = escalonador.executar_fcfs()
-        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
+        resultado += escalonador.executar_fcfs()
     elif opcao == 2:
-        resultado = escalonador.executar_srt()
-        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
+        resultado += escalonador.executar_srt()
     elif opcao == 3:
-        resultado = escalonador.executar_sjf()
-        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
+        resultado += escalonador.executar_sjf()
     elif opcao == 4:
         quantum = pedir_quantum()
-        resultado = escalonador.executar_rr(quantum)
-        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
+        resultado += escalonador.executar_rr(quantum)
     else:
         print("Até a próxima!")
         return
+    __imprimir_resultado__(resultado)
     mostrar_menu()
 
 
