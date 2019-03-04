@@ -12,7 +12,6 @@ class Escalonador:
         self.processos.sort(key=lambda p: p.chegada)
 
     def executar_fcfs(self):
-        wait_times = list()
         start_times = list()
         terminos = list()
         duracao_total = 0
@@ -26,7 +25,7 @@ class Escalonador:
                                                                                      processo.pid, "Chegada")))
 
         # First process doesn't wait
-        wait_times.insert(0, 0)
+        self.processos[0].set_tempo_espera(0)
         start_times.insert(0, self.processos[0].get_chegada())
         termino = self.processos[0].get_chegada() + self.processos[0].get_duracao()
         terminos.insert(0, termino)
@@ -36,7 +35,7 @@ class Escalonador:
         # But the others do
         for i in range(1, len(self.processos)):
             wait_time = self.processos[i - 1].get_duracao() - self.processos[i].get_chegada()
-            wait_times.insert(i, wait_time)
+            self.processos[i].set_tempo_espera(wait_time)
 
             start_time = start_times[i - 1] + self.processos[i - 1].get_duracao()
             start_times.insert(i, start_time)
@@ -54,7 +53,6 @@ class Escalonador:
 
     # Shortest Job First
     def executar_sjf(self):
-        wait_times = list()
         terminos = list()
         duracao_total = 0
         eventos = dict()
@@ -70,7 +68,7 @@ class Escalonador:
         sorted_list = list(self.processos)
         sorted_list[0].set_duracao(0)
         sorted_list.sort(key=lambda p: p.get_duracao())
-        wait_times.insert(0, 0)
+        self.processos[0].set_tempo_espera(0)
         termino = sorted_list[0].get_chegada() + first_duracao
         terminos.insert(0, termino)
         self.__add_event__(sorted_list[0].get_chegada(), sorted_list[0].get_id(), 1, eventos)
@@ -80,7 +78,7 @@ class Escalonador:
         # But the others do
         for i in range(1, len(sorted_list)):
             wait_time = terminos[i - 1] - sorted_list[i].get_chegada()
-            wait_times.insert(i, wait_time)
+            self.processos[i].set_tempo_espera(wait_time)
             termino = sorted_list[i].get_chegada() + wait_time + sorted_list[i].get_duracao()
             self.__add_event__(termino, sorted_list[i].get_id(), 2, eventos)
             if i != len(sorted_list) - 1:
