@@ -14,48 +14,40 @@ class Escalonador:
     def executar_fcfs(self):
         wait_times = list()
         start_times = list()
+        terminos = list()
+        duracao_total = 0
+        eventos = dict()
+
+        for processo in self.processos:
+            duracao_total += processo.get_duracao()
+            # Adicionar as chegadas
+            eventos[processo.get_chegada()] = list()
+            eventos[processo.get_chegada()].append(str(self.__get_formatted_result__(processo.get_chegada(),
+                                                                                     processo.pid, "Chegada")))
 
         # First process doesn't wait
         wait_times.insert(0, 0)
         start_times.insert(0, self.processos[0].get_chegada())
+        termino = self.processos[0].get_chegada() + self.processos[0].get_duracao()
+        terminos.insert(0, termino)
+        self.__add_event__(self.processos[0].get_chegada(), self.processos[0].get_id(), 1, eventos)
+        self.__add_event__(termino, self.processos[0].get_id(), 2, eventos)
 
         # But the others do
         for i in range(1, len(self.processos)):
             wait_time = self.processos[i - 1].get_duracao() - self.processos[i].get_chegada()
             wait_times.insert(i, wait_time)
-            start_time = self.processos[i - 1].get_duracao()
+
+            start_time = start_times[i - 1] + self.processos[i - 1].get_duracao()
             start_times.insert(i, start_time)
+            self.__add_event__(start_time, self.processos[i].get_id(), 1, eventos)
 
-        duracao_total = 0
-        for processo in self.processos:
-            duracao_total += processo.get_duracao()
+            termino = start_time + self.processos[i].get_duracao()
+            self.__add_event__(termino, self.processos[i].get_id(), 2, eventos)
 
-        instante_atual = 0
-        ultimo_processo = 0
         output = self.__get_formatted_result_header__("First Come First Serve")
-        while instante_atual <= duracao_total:
-            for i in range(0, len(self.processos)):
-                processo = self.processos[i]
-                # Verificar se algum processo chegou neste instante
-                if processo.chegada == instante_atual:
-                    output += self.__get_formatted_result__(instante_atual, processo.pid, "Chegada")
+        output += self.__print_events(eventos)
 
-                if i == 0 and instante_atual == processo.get_chegada():
-                    output += self.__get_formatted_result__(instante_atual, processo.pid, "Execução")
-
-                # Verificar se algum processo terminou neste instante
-                if instante_atual == start_times[i] + processo.duracao:
-                    output += self.__get_formatted_result__(instante_atual, processo.pid, "Exit")
-
-                    # Verificar se outro processo pode iniciar no próximo instante
-                    if ultimo_processo == len(self.processos) - 1:
-                        break
-                    else:
-                        ultimo_processo += 1
-                    proximo_processo = self.processos[ultimo_processo].get_id()
-                    output += self.__get_formatted_result__(instante_atual, proximo_processo, "Execução")
-                    # print("P" + str(proximo_processo) + " executou no instante " + str(instante_atual))
-            instante_atual += 1
         throughput = len(self.processos) / duracao_total
         output += self.__get_statistics__(0, 0, throughput, 0)
         return output
@@ -80,10 +72,10 @@ class Escalonador:
         sorted_list.sort(key=lambda p: p.get_duracao())
         wait_times.insert(0, 0)
         termino = sorted_list[0].get_chegada() + first_duracao
+        terminos.insert(0, termino)
         self.__add_event__(sorted_list[0].get_chegada(), sorted_list[0].get_id(), 1, eventos)
         self.__add_event__(termino, sorted_list[0].get_id(), 2, eventos)
         self.__add_event__(termino, sorted_list[1].get_id(), 1, eventos)
-        terminos.insert(0, termino)
 
         # But the others do
         for i in range(1, len(sorted_list)):
