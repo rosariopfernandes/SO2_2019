@@ -1,7 +1,6 @@
 from datetime import datetime
 from Escalonador import Escalonador
 from Programa import Programa
-from Processo import Processo
 
 
 def __get_formatted_process_list__(processos: list):
@@ -45,7 +44,18 @@ def pedir_quantum():
     return quantum
 
 
+def pedir_tempo():
+    tempo = int(input("Qual é o tempo total da simulação?"))
+    if tempo < 1:
+        print("O tempo tem de ser positivo e maior do que 0!")
+        return pedir_tempo()
+    return tempo
+
+
 def mostrar_menu():
+    tempo_total = pedir_tempo()
+    processos = Programa().gerar_lista_processos(tempo_total)
+    escalonador = Escalonador(processos, tempo_total)
     print("=======MENU======")
     print("1. Executar FCFS")
     print("2. Executar SRT")
@@ -53,49 +63,18 @@ def mostrar_menu():
     print("4. Executar RR")
     print("5. Sair")
     opcao = pedir_opcao()
-    # processos = Programa().gerar_lista_processos(3)
-    processos = [
-        Processo().set_chegada_duracao(0, 12),
-        Processo().set_chegada_duracao(3, 6),
-        Processo().set_chegada_duracao(5, 2),
-        Processo().set_chegada_duracao(8, 5),
-        Processo().set_chegada_duracao(13, 8)
-    ]
-
-    # processos = [
-    #     Processo().set_chegada_duracao(0, 1),
-    #     Processo().set_chegada_duracao(0, 1),
-    #     Processo().set_chegada_duracao(0, 1),
-    #     Processo().set_chegada_duracao(3, 1),
-    #     Processo().set_chegada_duracao(3, 2),
-    #     Processo().set_chegada_duracao(3, 3),
-    #     Processo().set_chegada_duracao(7, 3),
-    #     Processo().set_chegada_duracao(7, 2),
-    #     Processo().set_chegada_duracao(7, 1),
-    #     Processo().set_chegada_duracao(13, 1),
-    #     Processo().set_chegada_duracao(13, 2),
-    #     Processo().set_chegada_duracao(13, 3),
-    #     Processo().set_chegada_duracao(17, 1),
-    #     Processo().set_chegada_duracao(17, 2)
-    # ]
-
-    # processos = [
-    #     Processo().set_chegada_duracao(3, 9),
-    #     Processo().set_chegada_duracao(6, 4),
-    #     Processo().set_chegada_duracao(9, 12),
-    #     Processo().set_chegada_duracao(12, 3)
-    # ]
-    escalonador = Escalonador(processos)
     resultado = __get_formatted_process_list__(processos) + "\n"
     if opcao == 1:
         resultado += escalonador.executar_fcfs()
     elif opcao == 2:
-        resultado += escalonador.executar_srt()
+        # resultado += escalonador.executar_srt()
+        resultado += "Ainda não foi implementado SRT"
     elif opcao == 3:
         resultado += escalonador.executar_sjf()
     elif opcao == 4:
-        quantum = pedir_quantum()
-        resultado += escalonador.executar_rr(quantum)
+        # quantum = pedir_quantum()
+        # resultado += escalonador.executar_rr(quantum)
+        resultado += "Ainda não foi implementado RR"
     else:
         print("Até a próxima!")
         return
