@@ -11,8 +11,13 @@ class Processo:
     def __init__(self):
         self.pid = Processo.pid
         self.chegada = randint(0, 9)
-        self.duracao = randint(0, 9)
+        self.duracao = randint(1, 9)
         Processo.pid = Processo.pid + 1
+
+    def set_chegada_duracao(self, chegada: int, duracao: int):
+        self.set_chegada(chegada)
+        self.set_duracao(duracao)
+        return self
 
     def get_id(self):
         return self.pid
