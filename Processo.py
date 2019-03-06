@@ -5,19 +5,16 @@ class Processo:
     pid: int = 1
     chegada: int  # Horário de chegada
     duracao: int  # Previsão da Duração
-    tempo_espera: int = 0  # TODO: Calculate this value
-    tempo_resposta: int = 0  # TODO: Calculate this value
+    tempo_espera: int
+    tempo_resposta: int
 
     def __init__(self):
         self.pid = Processo.pid
         self.chegada = randint(0, 9)
         self.duracao = randint(1, 9)
+        self.tempo_espera = 0
+        self.tempo_resposta = 0
         Processo.pid = Processo.pid + 1
-
-    def set_chegada_duracao(self, chegada: int, duracao: int):
-        self.set_chegada(chegada)
-        self.set_duracao(duracao)
-        return self
 
     def get_id(self):
         return self.pid
@@ -38,11 +35,9 @@ class Processo:
         self.pid = pid
 
     def set_chegada(self, chegada: int):
-        # TODO: negar menores que 10
         self.chegada = chegada
 
     def set_duracao(self, duracao: int):
-        # TODO: negar menores que 10
         self.duracao = duracao
 
     def set_tempo_espera(self, tempo_espera: int):

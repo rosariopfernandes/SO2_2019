@@ -1,21 +1,6 @@
 from datetime import datetime
 from Escalonador import Escalonador
 from Programa import Programa
-from Processo import Processo
-
-
-def __get_statistics__(tempo_medio: int,  # Tempo médio de resposta
-                       turn_around: int,  # Turn Around Time
-                       throughput: int,  # Throughput
-                       utilizacao_cpu: int  # Taxa de Utilização do CPU
-                       ):
-    output = "Estatística da Simulação\n" \
-             + "========================================\n" \
-             + "Tempo médio de resposta: " + str(tempo_medio) + "\n" \
-             + "Turn Around Time: " + str(turn_around) + "\n" \
-             + "Throughput: " + str(throughput) + "\n" \
-             + "Taxa de Utilização do CPU: " + str(utilizacao_cpu) + "\n"
-    return output
 
 
 def __get_formatted_process_list__(processos: list):
@@ -42,6 +27,7 @@ def __imprimir_resultado__(resultado: str):
     filename = __write_file__(resultado)
     print("Dados guardados em " + filename)
 
+
 def pedir_opcao():
     opcao = int(input("Escolha a opção:"))
     if opcao > 5 or opcao < 1:
@@ -58,7 +44,18 @@ def pedir_quantum():
     return quantum
 
 
+def pedir_tempo():
+    tempo = int(input("Qual é o tempo total da simulação?"))
+    if tempo < 1:
+        print("O tempo tem de ser positivo e maior do que 0!")
+        return pedir_tempo()
+    return tempo
+
+
 def mostrar_menu():
+    tempo_total = pedir_tempo()
+    processos = Programa().gerar_lista_processos(tempo_total)
+    escalonador = Escalonador(processos, tempo_total)
     print("=======MENU======")
     print("1. Executar FCFS")
     print("2. Executar SRT")
@@ -66,29 +63,22 @@ def mostrar_menu():
     print("4. Executar RR")
     print("5. Sair")
     opcao = pedir_opcao()
-    processos = Programa().gerar_lista_processos(3)
-    # processos = [
-    #     Processo().set_chegada_duracao(0, 12),
-    #     Processo().set_chegada_duracao(3, 6),
-    #     Processo().set_chegada_duracao(5, 2),
-    #     Processo().set_chegada_duracao(8, 5),
-    #     Processo().set_chegada_duracao(13, 8)
-    # ]
-    escalonador = Escalonador(processos)
+    resultado = __get_formatted_process_list__(processos) + "\n"
     if opcao == 1:
-        resultado = escalonador.executar_fcfs()
-        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
+        resultado += escalonador.executar_fcfs()
     elif opcao == 2:
-        print("opcao 2")
+        # resultado += escalonador.executar_srt()
+        resultado += "Ainda não foi implementado SRT"
     elif opcao == 3:
-        resultado = escalonador.executar_sjf()
-        __imprimir_resultado__(__get_formatted_process_list__(processos) + "\n" + resultado)
+        resultado += escalonador.executar_sjf()
     elif opcao == 4:
-        quantum = pedir_quantum()
-        escalonador.executar_rr(quantum)
+        # quantum = pedir_quantum()
+        # resultado += escalonador.executar_rr(quantum)
+        resultado += "Ainda não foi implementado RR"
     else:
         print("Até a próxima!")
         return
+    __imprimir_resultado__(resultado)
     mostrar_menu()
 
 
