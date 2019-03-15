@@ -1,5 +1,5 @@
 import unittest
-from Programa import Programa
+from TP1.Programa import Programa
 
 
 class TestPrograma(unittest.TestCase):

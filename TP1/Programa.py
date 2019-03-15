@@ -1,4 +1,4 @@
-from Processo import Processo
+from TP1.Processo import Processo
 
 
 class Programa:

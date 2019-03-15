@@ -1,6 +1,6 @@
 import unittest
-from Maestro import Maestro
-from Programa import Programa
+from TP1.Maestro import Maestro
+from TP1.Programa import Programa
 
 
 class TestMaestro(unittest.TestCase):

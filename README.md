@@ -7,7 +7,7 @@ O trabalho prático 1 está dividido em 2 partes:
 
 - Parte 1
 
-    Esta parte é mais teórica. As questões e as minhas respostas podem ser encontradas [neste ficheiro](Teoria.md).
+    Esta parte é mais teórica. As questões e as minhas respostas podem ser encontradas [neste ficheiro](TP1/Teoria.md).
     
 - Parte 2
     
@@ -17,7 +17,7 @@ O trabalho prático 1 está dividido em 2 partes:
 
 ## Trabalho Prático 2
 
-Por Anunciar 
+O enunciado do trabalho pode ser encontrado [aqui](TP2/Enunciado.md).
 
 ## License
 

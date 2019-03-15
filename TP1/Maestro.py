@@ -1,6 +1,6 @@
 from datetime import datetime
-from Escalonador import Escalonador
-from Programa import Programa
+from TP1.Escalonador import Escalonador
+from TP1.Programa import Programa
 
 
 def __get_formatted_process_list__(processos: list):
