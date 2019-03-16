@@ -17,9 +17,9 @@ def main():
     for i in range(1, maxsize):
         if not is_prime(i):
             continue
-        pressed_key = msvcrt.getch()
-        if pressed_key == 'c':
-            break
+        if msvcrt.kbhit():
+            if str(msvcrt.getch()) == "b'c'":
+                break
         n_vezes += 1
         ultimo_primo = i
         soma += i
